@@ -65,9 +65,15 @@ struct EmojiTabResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: V
                                         self.pressed(candidate: data.candidate)
                                     }
                                     .buttonStyle(EmojiTabResultBarButtonStyle<Extension>(height: buttonHeight))
-                                    .contextMenu {
-                                        ResultContextMenuView(candidate: data.candidate, displayResetLearningButton: false)
-                                    }
+                                    .simultaneousGesture(
+                                        LongPressGesture(minimumDuration: 0.5)
+                                            .onEnded { _ in
+                                                if let labelText = data.candidate.textualRepresentation {
+                                                    variableStates.magnifyingText = labelText
+                                                    variableStates.boolStates.isTextMagnifying = true
+                                                }
+                                            }
+                                    )
                                 } else {
                                     Text(value)
                                         .font(Design.fonts.resultViewFont(theme: theme, userSizePrefrerence: Extension.SettingProvider.resultViewFontSize))

@@ -54,6 +54,9 @@ public extension AzooKeyTheme {
         pushedKeyFillColor: .color(Color(.displayP3, red: 0.929, green: 0.929, blue: 0.945)),
         suggestKeyFillColor: nil,
         suggestLabelTextColor: .color(Color(.displayP3, white: 0, opacity: 1)),
+        flickPopupFillColor: nil,
+        magnifyViewFillColor: nil,
+        magnifyViewTextColor: nil,
         keyShadow: nil
     )
 }
@@ -73,6 +76,9 @@ extension AzooKeySpecificTheme: ApplicationSpecificKeyboardViewExtensionLayoutDe
         pushedKeyFillColor: .color(.systemGray4, blendMode: .softLight),
         suggestKeyFillColor: nil,
         suggestLabelTextColor: nil,
+        flickPopupFillColor: nil,
+        magnifyViewFillColor: nil,
+        magnifyViewTextColor: nil,
         keyShadow: .init(color: .color(.black), radius: 0.5, x: 0, y: 0.75)
     )
 
@@ -90,6 +96,9 @@ extension AzooKeySpecificTheme: ApplicationSpecificKeyboardViewExtensionLayoutDe
         pushedKeyFillColor: .system(.highlightedKeyColor),
         suggestKeyFillColor: nil,
         suggestLabelTextColor: nil,
+        flickPopupFillColor: nil,
+        magnifyViewFillColor: nil,
+        magnifyViewTextColor: nil,
         keyShadow: nil
     )
 }

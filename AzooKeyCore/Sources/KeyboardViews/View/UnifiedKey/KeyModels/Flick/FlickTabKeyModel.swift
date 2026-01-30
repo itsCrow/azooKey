@@ -48,13 +48,17 @@ struct FlickTabKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Un
     @MainActor
     func backgroundStyleWhenUnpressed<ThemeExtension>(states: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
         if let isTabMoveSelected = isMoveTabTargetSelected(states: states), isTabMoveSelected {
-            return (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
+            // Use suggestKeyFillColor (Special Button color) for active tab, fall back to pushedKeyFillColor
+            if let specialColor = theme.suggestKeyFillColor {
+                return (specialColor.color, specialColor.blendMode, specialColor.isGlass)
+            }
+            return (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode, theme.pushedKeyFillColor.isGlass)
         }
         return switch colorRole {
-        case .normal: (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode)
-        case .special: (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
-        case .selected: (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
-        case .unimportant: (Color(white: 0, opacity: 0.001), .normal)
+        case .normal: (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode, theme.normalKeyFillColor.isGlass)
+        case .special: (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
+        case .selected: (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode, theme.pushedKeyFillColor.isGlass)
+        case .unimportant: (Color(white: 0, opacity: 0.001), .normal, false)
         }
     }
 

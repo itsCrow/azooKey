@@ -10,11 +10,11 @@ import Foundation
 import KeyboardThemes
 import SwiftUI
 
-public typealias SimpleKeyBackgroundStyleValue = (color: Color, blendMode: BlendMode)
+public typealias SimpleKeyBackgroundStyleValue = (color: Color, blendMode: BlendMode, useGlass: Bool)
 
 extension ThemeColor {
     var simpleKeyBackgroundStyle: SimpleKeyBackgroundStyleValue {
-        (self.color, self.blendMode)
+        (self.color, self.blendMode, self.isGlass)
     }
 }
 
@@ -34,7 +34,7 @@ enum SimpleUnpressedKeyColorType: UInt8 {
         case .selected:
             theme.pushedKeyFillColor.simpleKeyBackgroundStyle
         case .unimportant:
-            (Color(white: 0, opacity: 0.001), .normal)
+            (Color(white: 0, opacity: 0.001), .normal, false)
         case .enter:
             switch states.enterKeyState {
             case .complete:
@@ -45,9 +45,9 @@ enum SimpleUnpressedKeyColorType: UInt8 {
                     theme.specialKeyFillColor.simpleKeyBackgroundStyle
                 default:
                     if theme == ThemeExtension.default {
-                        (Design.colors.specialEnterKeyColor, .normal)
+                        (Design.colors.specialEnterKeyColor, .normal, false)
                     } else if theme == ThemeExtension.native {
-                        (.accentColor, .normal)
+                        (.accentColor, .normal, false)
                     } else {
                         theme.specialKeyFillColor.simpleKeyBackgroundStyle
                     }

@@ -24,7 +24,7 @@ struct FlickKanaSymbolsKeyModel<Extension: ApplicationSpecificKeyboardViewExtens
         KeyLabel(Extension.SettingProvider.kanaSymbolsFlickCustomKey.compiled().labelType, width: width)
     }
     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-        (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode)
+        (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode, theme.normalKeyFillColor.isGlass)
     }
     func feedback(variableStates _: VariableStates) {
         KeyboardFeedback<Extension>.click()

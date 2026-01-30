@@ -47,7 +47,7 @@ extension CodableActionData {
         case let .launchApplication(value):
             switch value.scheme {
             case .azooKey:
-                return .openApp("azooKey://" + value.target)
+                return .openApp("languageboard://" + value.target)
             case .shortcuts:
                 return .openApp("shortcuts://" + value.target)
             }

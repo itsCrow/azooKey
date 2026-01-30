@@ -38,7 +38,7 @@ struct QwertyNextCandidateKeyModel<Extension: ApplicationSpecificKeyboardViewExt
 
     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
         // QwertyNextCandidateKeyModel uses normal background by default
-        (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode)
+        (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode, theme.normalKeyFillColor.isGlass)
     }
 
     func feedback(variableStates: VariableStates) {

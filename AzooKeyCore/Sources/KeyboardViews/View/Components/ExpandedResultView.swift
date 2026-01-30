@@ -70,9 +70,15 @@ struct ExpandedResultView<Extension: ApplicationSpecificKeyboardViewExtension>: 
                                     }
                                 }
                                 .buttonStyle(ResultButtonStyle<Extension>(height: 18))
-                                .contextMenu {
-                                    ResultContextMenuView(candidate: datum.candidate, displayResetLearningButton: Extension.SettingProvider.canResetLearningForCandidate)
-                                }
+                                .simultaneousGesture(
+                                    LongPressGesture(minimumDuration: 0.5)
+                                        .onEnded { _ in
+                                            if let labelText = datum.candidate.textualRepresentation {
+                                                variableStates.magnifyingText = labelText
+                                                variableStates.boolStates.isTextMagnifying = true
+                                            }
+                                        }
+                                )
                             }
                         }
                     }

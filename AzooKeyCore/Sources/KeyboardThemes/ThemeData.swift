@@ -26,9 +26,12 @@ public struct ThemeData<ApplicationExtension: ApplicationSpecificTheme>: Codable
     public var pushedKeyFillColor: ColorData   // 自動で設定する
     public var suggestKeyFillColor: ColorData?  // 自動で設定する
     public var suggestLabelTextColor: ColorData?        // 設定は露出させない
+    public var flickPopupFillColor: ColorData?          // Flick popup background
+    public var magnifyViewFillColor: ColorData?         // Magnify view background
+    public var magnifyViewTextColor: ColorData?         // Magnify view text color
     public var keyShadow: ThemeShadowData<ColorData>?   // 設定は露出させない
 
-    public init(id: Int? = nil, backgroundColor: ColorData, picture: ThemePicture, textColor: ColorData, textFont: ThemeFontWeight, resultTextColor: ColorData, resultBackgroundColor: ColorData, borderColor: ColorData, borderWidth: Double, normalKeyFillColor: ColorData, specialKeyFillColor: ColorData, pushedKeyFillColor: ColorData, suggestKeyFillColor: ColorData? = nil, suggestLabelTextColor: ColorData? = nil, keyShadow: ThemeShadowData<ColorData>? = nil) {
+    public init(id: Int? = nil, backgroundColor: ColorData, picture: ThemePicture, textColor: ColorData, textFont: ThemeFontWeight, resultTextColor: ColorData, resultBackgroundColor: ColorData, borderColor: ColorData, borderWidth: Double, normalKeyFillColor: ColorData, specialKeyFillColor: ColorData, pushedKeyFillColor: ColorData, suggestKeyFillColor: ColorData? = nil, suggestLabelTextColor: ColorData? = nil, flickPopupFillColor: ColorData? = nil, magnifyViewFillColor: ColorData? = nil, magnifyViewTextColor: ColorData? = nil, keyShadow: ThemeShadowData<ColorData>? = nil) {
         self.id = id
         self.backgroundColor = backgroundColor
         self.picture = picture
@@ -43,6 +46,9 @@ public struct ThemeData<ApplicationExtension: ApplicationSpecificTheme>: Codable
         self.pushedKeyFillColor = pushedKeyFillColor
         self.suggestKeyFillColor = suggestKeyFillColor
         self.suggestLabelTextColor = suggestLabelTextColor
+        self.flickPopupFillColor = flickPopupFillColor
+        self.magnifyViewFillColor = magnifyViewFillColor
+        self.magnifyViewTextColor = magnifyViewTextColor
         self.keyShadow = keyShadow
     }
 
@@ -61,6 +67,9 @@ public struct ThemeData<ApplicationExtension: ApplicationSpecificTheme>: Codable
         case pushedKeyFillColor
         case suggestKeyFillColor
         case suggestLabelTextColor
+        case flickPopupFillColor
+        case magnifyViewFillColor
+        case magnifyViewTextColor
         case keyShadow
     }
 
@@ -80,8 +89,11 @@ public struct ThemeData<ApplicationExtension: ApplicationSpecificTheme>: Codable
         self.specialKeyFillColor = try container.decode(ColorData.self, forKey: .specialKeyFillColor)
         self.pushedKeyFillColor = try container.decode(ColorData.self, forKey: .pushedKeyFillColor)
         self.suggestKeyFillColor = try? container.decode(ColorData?.self, forKey: .suggestKeyFillColor)
-        /// エントリがない場合はデフォルトで黒にする
-        self.suggestLabelTextColor = (try? container.decode(ColorData?.self, forKey: .suggestLabelTextColor)) ?? .color(Color(white: 0))
+        /// エントリがない場合はnilにして、ビュー側でtextColorにフォールバックする
+        self.suggestLabelTextColor = try? container.decodeIfPresent(ColorData.self, forKey: .suggestLabelTextColor)
+        self.flickPopupFillColor = try? container.decodeIfPresent(ColorData.self, forKey: .flickPopupFillColor)
+        self.magnifyViewFillColor = try? container.decodeIfPresent(ColorData.self, forKey: .magnifyViewFillColor)
+        self.magnifyViewTextColor = try? container.decodeIfPresent(ColorData.self, forKey: .magnifyViewTextColor)
         self.keyShadow = try? container.decode(ThemeShadowData<ColorData>?.self, forKey: .keyShadow)
     }
 

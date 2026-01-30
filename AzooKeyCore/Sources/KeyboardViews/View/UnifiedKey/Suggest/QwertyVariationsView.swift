@@ -27,7 +27,7 @@ struct QwertyVariationsView<Extension: ApplicationSpecificKeyboardViewExtension>
         case (.dark, nativeTheme):
             .white
         default:
-            theme.suggestLabelTextColor?.color ?? .black
+            theme.suggestLabelTextColor?.color ?? theme.textColor.color
         }
     }
 
@@ -37,7 +37,7 @@ struct QwertyVariationsView<Extension: ApplicationSpecificKeyboardViewExtension>
                 ZStack {
                     if index == selection {
                         Rectangle()
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(theme.normalKeyFillColor.color)
                             .cornerRadius(10.0)
                             .matchedGeometryEffect(id: "focus", in: namespace)
                     }

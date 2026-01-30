@@ -115,9 +115,15 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
                                                 )
                                             })
                                             .buttonStyle(ResultButtonStyle<Extension>(height: buttonHeight, selected: .init(selection: variableStates.resultModel.selection, index: data.id)))
-                                            .contextMenu {
-                                                ResultContextMenuView(candidate: data.candidate, displayResetLearningButton: Extension.SettingProvider.canResetLearningForCandidate, index: data.id)
-                                            }
+                                            .simultaneousGesture(
+                                                LongPressGesture(minimumDuration: 0.5)
+                                                    .onEnded { _ in
+                                                        if let labelText = data.candidate.textualRepresentation {
+                                                            variableStates.magnifyingText = labelText
+                                                            variableStates.boolStates.isTextMagnifying = true
+                                                        }
+                                                    }
+                                            )
                                             .id(data.id)
                                         } else {
                                             Text(Design.fonts.forceJapaneseFont(text: value, theme: theme, userSizePrefrerence: Extension.SettingProvider.resultViewFontSize))
@@ -180,53 +186,6 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
 
     private func expand() {
         self.isResultViewExpanded = true
-    }
-}
-
-struct ResultContextMenuView: View {
-    @EnvironmentObject private var variableStates: VariableStates
-    @Environment(\.userActionManager) private var action
-    private let candidate: any ResultViewItemData
-    private let index: Int?
-    private let displayResetLearningButton: Bool
-
-    init(candidate: any ResultViewItemData, displayResetLearningButton: Bool, index: Int? = nil) {
-        self.candidate = candidate
-        self.index = index
-        self.displayResetLearningButton = displayResetLearningButton
-    }
-
-    var body: some View {
-        Button("大きな文字で表示", systemImage: "plus.magnifyingglass") {
-            if let labelText = candidate.textualRepresentation {
-                variableStates.magnifyingText = labelText
-                variableStates.boolStates.isTextMagnifying = true
-            }
-        }
-        if displayResetLearningButton {
-            Button("この候補の学習をリセットする", systemImage: "clear") {
-                action.notifyForgetCandidate(candidate, variableStates: variableStates)
-            }
-        }
-        Section(SemiStaticStates.shared.hasFullAccess ? "フィードバックを送信" : "フルアクセスが必要です") {
-            Button("意図した変換ではない", systemImage: "exclamationmark.bubble") {
-                Task { @MainActor in
-                    await action.notifyReportWrongConversion(candidate, index: index, variableStates: variableStates)
-                }
-            }
-            .disabled(!SemiStaticStates.shared.hasFullAccess)
-            Button("欲しい変換がない", systemImage: "questionmark.bubble") {
-                Task { @MainActor in
-                    await action.notifyReportWrongConversion(candidate, index: index, variableStates: variableStates)
-                }
-            }
-            .disabled(!SemiStaticStates.shared.hasFullAccess)
-        }
-        #if DEBUG
-        Button("デバッグ情報を表示する", systemImage: "ladybug.fill") {
-            debug(self.candidate.getDebugInformation())
-        }
-        #endif
     }
 }
 

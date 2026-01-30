@@ -74,7 +74,7 @@ struct QwertyDynamicChangeKeyModel<Extension: ApplicationSpecificKeyboardViewExt
         }
     }
     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-        (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
+        (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
     }
     func feedback(variableStates _: VariableStates) {
         KeyboardFeedback<Extension>.tabOrOtherKey()

@@ -25,13 +25,8 @@ struct UnifiedQwertySuggestView<Extension: ApplicationSpecificKeyboardViewExtens
     private var keyBorderWidth: CGFloat { theme.borderWidth }
 
     private var suggestColor: Color {
-        let def = Extension.ThemeExtension.default
-        let nat = Extension.ThemeExtension.native
-        return switch (colorScheme, theme) {
-        case (_, def): Design.colors.suggestKeyColor
-        case (.dark, nat): .systemGray3
-        default: .white
-        }
+        // Use pushedKeyFillColor from theme (linked to accent color in customization)
+        theme.pushedKeyFillColor.color
     }
     private var suggestTextColor: Color? {
         let def = Extension.ThemeExtension.default

@@ -13,6 +13,7 @@ public enum ThemeColor<SystemColor: ApplicationSpecificColor>: Sendable {
     case color(Color, blendMode: BlendMode = .normal)
     case system(SystemColor, blendMode: BlendMode = .normal)
     case dynamic(DynamicColor, blendMode: BlendMode = .normal)
+    case glass  // iOS 26 liquid glass effect
 
     public var color: Color {
         switch self {
@@ -22,6 +23,8 @@ public enum ThemeColor<SystemColor: ApplicationSpecificColor>: Sendable {
             systemColor.color
         case let .dynamic(dynamicColor, _):
             dynamicColor.color
+        case .glass:
+            .clear  // Glass effect uses clear color; visual is handled by modifier
         }
     }
 
@@ -29,7 +32,14 @@ public enum ThemeColor<SystemColor: ApplicationSpecificColor>: Sendable {
         switch self {
         case let .color(_, blendMode), let .system(_, blendMode), let .dynamic(_, blendMode):
             blendMode
+        case .glass:
+            .normal
         }
+    }
+
+    public var isGlass: Bool {
+        if case .glass = self { return true }
+        return false
     }
 
     public enum DynamicColor: String, Codable, CaseIterable, Sendable {
@@ -78,11 +88,14 @@ extension ThemeColor: Codable, Equatable {
     public init(from decoder: any Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
 
+        let isGlass = try values.decodeIfPresent(Bool.self, forKey: .glass) ?? false
         let color = try values.decodeIfPresent(Color.self, forKey: .color)
         let systemColor = try values.decodeIfPresent(SystemColor.self, forKey: .systemColor)
         let dynamicColor = try values.decodeIfPresent(DynamicColor.self, forKey: .dynamicColor)
 
-        if let color {
+        if isGlass {
+            self = .glass
+        } else if let color {
             self = .color(color)
         } else if let systemColor = systemColor {
             self = .system(systemColor)
@@ -97,6 +110,7 @@ extension ThemeColor: Codable, Equatable {
         case color
         case systemColor
         case dynamicColor
+        case glass
     }
 
     /// - warning: 現在、`blendMode`の値は明示的に保存していない。このため、設定で`blendMode`を制御するためには追加の対応を要する。
@@ -106,6 +120,7 @@ extension ThemeColor: Codable, Equatable {
         var color: Color?
         var systemColor: SystemColor?
         var dynamicColor: DynamicColor?
+        var isGlass = false
         switch self {
         case let .color(_color, _):
             if let matchedDynamicColor = DynamicColor.allCases.first(where: {$0.color == _color}) {
@@ -117,11 +132,16 @@ extension ThemeColor: Codable, Equatable {
             systemColor = _systemColor
         case let .dynamic(_dynamicColor, _):
             dynamicColor = _dynamicColor
+        case .glass:
+            isGlass = true
         }
 
         try container.encode(color, forKey: .color)
         try container.encode(systemColor, forKey: .systemColor)
         try container.encode(dynamicColor, forKey: .dynamicColor)
+        if isGlass {
+            try container.encode(true, forKey: .glass)
+        }
     }
 
 }

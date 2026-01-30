@@ -62,13 +62,15 @@ struct SupplementaryCandidateView<Extension: ApplicationSpecificKeyboardViewExte
                     )
                 }
                 .buttonStyle(ResultButtonStyle<Extension>(height: buttonHeight))
-                .contextMenu {
-                    ResultContextMenuView(
-                        candidate: data.candidate,
-                        displayResetLearningButton: Extension.SettingProvider.canResetLearningForCandidate,
-                        index: data.id
-                    )
-                }
+                .simultaneousGesture(
+                    LongPressGesture(minimumDuration: 0.5)
+                        .onEnded { _ in
+                            if let labelText = data.candidate.textualRepresentation {
+                                variableStates.magnifyingText = labelText
+                                variableStates.boolStates.isTextMagnifying = true
+                            }
+                        }
+                )
             } else {
                 Text(
                     Design.fonts.forceJapaneseFont(

@@ -3,7 +3,7 @@ import Foundation
 import KeyboardThemes
 import SwiftUI
 
-public typealias UnifiedKeyBackgroundStyleValue = (color: Color, blendMode: BlendMode)
+public typealias UnifiedKeyBackgroundStyleValue = (color: Color, blendMode: BlendMode, useGlass: Bool)
 
 public protocol UnifiedKeyModelProtocol<Extension> {
     associatedtype Extension: ApplicationSpecificKeyboardViewExtension
@@ -48,7 +48,7 @@ public extension UnifiedKeyModelProtocol {
     @MainActor func flickSensitivity(to direction: FlickDirection) -> CGFloat { 25 / Extension.SettingProvider.flickSensitivity }
     @MainActor func showsTapBubble(variableStates _: VariableStates) -> Bool { false }
     @MainActor func backgroundStyleWhenPressed<ThemeExtension>(theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-        (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
+        (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode, theme.pushedKeyFillColor.isGlass)
     }
 
     // Default capabilities derived from variationSpace and longPressActions

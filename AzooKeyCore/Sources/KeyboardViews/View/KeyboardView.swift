@@ -143,7 +143,7 @@ public struct KeyboardView<Extension: ApplicationSpecificKeyboardViewExtension>:
             }
 
             if variableStates.boolStates.isTextMagnifying {
-                LargeTextView(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
+                LargeTextView<Extension>(text: variableStates.magnifyingText, isViewOpen: $variableStates.boolStates.isTextMagnifying)
             }
             if showMessage {
                 ForEach(messageManager.necessaryMessages, id: \.id) {data in

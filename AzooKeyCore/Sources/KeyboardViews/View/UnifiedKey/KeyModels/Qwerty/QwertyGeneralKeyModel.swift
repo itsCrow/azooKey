@@ -79,10 +79,10 @@ struct QwertyGeneralKeyModel<Extension: ApplicationSpecificKeyboardViewExtension
 
     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
         switch role {
-        case .normal: (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode)
-        case .special: (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
-        case .selected: (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode)
-        case .unimportant: (Color(white: 0, opacity: 0.001), .normal)
+        case .normal: (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode, theme.normalKeyFillColor.isGlass)
+        case .special: (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
+        case .selected: (theme.pushedKeyFillColor.color, theme.pushedKeyFillColor.blendMode, theme.pushedKeyFillColor.isGlass)
+        case .unimportant: (Color(white: 0, opacity: 0.001), .normal, false)
         }
     }
 

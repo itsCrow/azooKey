@@ -46,7 +46,7 @@ public extension BoolKeyboardSettingKey {
 public struct LiveConversionInputMode: BoolKeyboardSettingKey {
     public static let title: LocalizedStringKey = "ライブ変換"
     public static let explanation: LocalizedStringKey = "入力中の文字列を自動的に変換します。"
-    public static let defaultValue = true
+    public static let defaultValue = false
     public static let key: String = "live_conversion"
 }
 

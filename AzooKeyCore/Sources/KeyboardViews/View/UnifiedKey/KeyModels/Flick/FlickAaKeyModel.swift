@@ -42,9 +42,9 @@ struct FlickAaKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Uni
     }
     func backgroundStyleWhenUnpressed<ThemeExtension>(states: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
         if states.boolStates.isCapsLocked {
-            (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
+            (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
         } else {
-            (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode)
+            (theme.normalKeyFillColor.color, theme.normalKeyFillColor.blendMode, theme.normalKeyFillColor.isGlass)
         }
     }
 }

@@ -44,25 +44,37 @@ struct UnifiedEnterKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>
     }
 
     func label<ThemeExtension>(width: CGFloat, theme: ThemeData<ThemeExtension>, states: VariableStates, color: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-        let text = Design.language.getEnterKeyText(states.enterKeyState)
-        return KeyLabel(.text(text), width: width, textSize: textSize, textColor: color ?? specialTextColor(states: states, theme: theme))
+        let textColor = color ?? specialTextColor(states: states, theme: theme)
+
+        switch states.tabManager.existentialTab() {
+        case .flick_hira, .flick_abc, .flick_numbersymbols:
+            // All flick keyboards: show return arrow icon
+            return KeyLabel(.image("return.left"), width: width, textSize: textSize, textColor: textColor)
+        case .qwerty_abc, .qwerty_numbers, .qwerty_symbols:
+            // Qwerty ABC/numbers/symbols: show "Enter" text
+            return KeyLabel(.text("Enter"), width: width, textSize: textSize, textColor: textColor)
+        default:
+            // For qwerty kana and other keyboards, use the original localized text
+            let text = Design.language.getEnterKeyText(states.enterKeyState)
+            return KeyLabel(.text(text), width: width, textSize: textSize, textColor: textColor)
+        }
     }
 
     func backgroundStyleWhenUnpressed<ThemeExtension>(states: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
         switch states.enterKeyState {
         case .complete:
-            return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
+            return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
         case let .return(type):
             switch type {
             case .default:
-                return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
+                return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
             default:
                 if theme == ThemeExtension.default {
-                    return (Design.colors.specialEnterKeyColor, .normal)
+                    return (Design.colors.specialEnterKeyColor, .normal, false)
                 } else if theme == ThemeExtension.native {
-                    return (.accentColor, .normal)
+                    return (.accentColor, .normal, false)
                 } else {
-                    return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode)
+                    return (theme.specialKeyFillColor.color, theme.specialKeyFillColor.blendMode, theme.specialKeyFillColor.isGlass)
                 }
             }
         }

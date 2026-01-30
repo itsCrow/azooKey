@@ -17,7 +17,14 @@ public extension Custard {
                 .gridFit(.init(x: 0, y: 0)): .system(.flickStar123Tab),
                 .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
                 .gridFit(.init(x: 0, y: 2)): .system(.flickHiraTab),
-                .gridFit(.init(x: 0, y: 3)): .system(.changeKeyboard),
+                .gridFit(.init(x: 0, y: 3)): .custom(
+                    CustardInterfaceCustomKey(
+                        design: .init(label: .systemImage("book"), color: .special),
+                        press_actions: [.launchApplication(.init(scheme: .azooKey, target: ""))],
+                        longpress_actions: .none,
+                        variations: []
+                    )
+                ),
                 // 2列目
                 .gridFit(.init(x: 1, y: 0)): .custom(
                     .flickSimpleInputs(center: "あ", left: "い", top: "う", right: "え", bottom: "お")

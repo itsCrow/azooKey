@@ -42,34 +42,42 @@ struct UnifiedFlickSuggestView<Extension: ApplicationSpecificKeyboardViewExtensi
         let defaultTheme = Extension.ThemeExtension.default
         let nativeTheme = Extension.ThemeExtension.native
         var pointedColor: Color {
+            // Use theme color if set, otherwise use default conditional logic
+            if let fillColor = theme.flickPopupFillColor {
+                return fillColor.color
+            }
             switch (colorScheme, theme) {
             case
                 (.dark, defaultTheme):
-                .systemGray4
+                return .systemGray4
             case (.dark, nativeTheme):
-                .systemGray3
+                return .systemGray3
             default:
-                .white
+                return .white
             }
         }
         var unpointedColor: Color {
+            // Use theme color if set, otherwise use default conditional logic
+            if let fillColor = theme.flickPopupFillColor {
+                return fillColor.color
+            }
             switch (colorScheme, theme) {
             case
                 (_, defaultTheme),
                 (.dark, nativeTheme):
-                .systemGray5
+                return .systemGray5
             default:
-                .white
+                return .white
             }
         }
         var shadowColor: Color {
-            switch (colorScheme, theme) {
-            case
-                (.light, defaultTheme),
-                (.light, nativeTheme):
-                .gray
-            default:
-                .clear
+            switch colorScheme {
+            case .light:
+                return .gray
+            case .dark:
+                return .clear
+            @unknown default:
+                return .gray
             }
         }
         let color = isPointed ? pointedColor : unpointedColor
@@ -99,7 +107,7 @@ struct UnifiedFlickSuggestView<Extension: ApplicationSpecificKeyboardViewExtensi
             .frame(width: size.width * sizeTimes[0], height: size.height * sizeTimes[1])
             .shadow(color: shadowColor, radius: 10, y: 5)
             .overlay {
-                self.keyLabel(for: direction, textColor: theme.suggestLabelTextColor?.color)
+                self.keyLabel(for: direction, textColor: theme.suggestLabelTextColor?.color ?? theme.textColor.color)
                     .padding(EdgeInsets(
                         top: size.height * paddings[0],
                         leading: size.width * paddings[1],
@@ -126,13 +134,17 @@ struct UnifiedFlickSuggestView<Extension: ApplicationSpecificKeyboardViewExtensi
         let nativeTheme = Extension.ThemeExtension.native
         // ポインテッド時の色を定義
         var color: Color {
+            // Use theme color if set, otherwise use default conditional logic
+            if let fillColor = theme.flickPopupFillColor {
+                return fillColor.color
+            }
             switch (colorScheme, theme) {
             case (.dark, defaultTheme):
-                .systemGray4
+                return .systemGray4
             case (.dark, nativeTheme):
-                .systemGray3
+                return .systemGray3
             default:
-                .white
+                return .white
             }
         }
         let widthDiff: CGFloat = switch direction {
@@ -158,7 +170,7 @@ struct UnifiedFlickSuggestView<Extension: ApplicationSpecificKeyboardViewExtensi
                 case .top: -cornerRadius + sizeDiff / 2
                 case .bottom: cornerRadius - sizeDiff / 2
                 }
-                self.keyLabel(for: direction, textColor: theme.suggestLabelTextColor?.color)
+                self.keyLabel(for: direction, textColor: theme.suggestLabelTextColor?.color ?? theme.textColor.color)
                     .offset(x: offsetX, y: offsetY)
             }
             .opacity(isHidden ? 0 : 1)
@@ -186,7 +198,7 @@ struct UnifiedFlickSuggestView<Extension: ApplicationSpecificKeyboardViewExtensi
                         .zIndex(1)
                     Rectangle()
                         .strokeAndFill(
-                            fillContent: .blue,
+                            fillContent: theme.pushedKeyFillColor.color,
                             strokeContent: .gray,
                             lineWidth: 0.5
                         )

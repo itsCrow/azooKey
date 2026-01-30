@@ -18,6 +18,9 @@ import SwiftUtils
 final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
     override init() {}
 
+    /// Hook for LanguageBoard to capture committed candidates for flashcard processing
+    var onCandidateCommitted: ((Candidate) -> Void)?
+
     var inputManager = InputManager()
     private weak var delegate: KeyboardViewController?
 
@@ -69,6 +72,7 @@ final class KeyboardActionManager: UserActionManager, @unchecked Sendable {
     ///   - variableStates: 状態。
     override func notifyComplete(_ candidate: any ResultViewItemData, variableStates: VariableStates) {
         if let candidate = candidate as? Candidate {
+            self.onCandidateCommitted?(candidate)
             self.inputManager.complete(candidate: candidate)
             self.registerActions(candidate.actions.map(\.action), variableStates: variableStates)
         } else if let candidate = candidate as? ReplacementCandidate {
