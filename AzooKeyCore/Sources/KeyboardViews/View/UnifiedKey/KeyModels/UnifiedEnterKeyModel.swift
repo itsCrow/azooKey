@@ -50,11 +50,11 @@ struct UnifiedEnterKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>
         case .flick_hira, .flick_abc, .flick_numbersymbols:
             // All flick keyboards: show return arrow icon
             return KeyLabel(.image("return.left"), width: width, textSize: textSize, textColor: textColor)
-        case .qwerty_abc, .qwerty_numbers, .qwerty_symbols:
-            // Qwerty ABC/numbers/symbols: show "Enter" text
-            return KeyLabel(.text("Enter"), width: width, textSize: textSize, textColor: textColor)
+        case .qwerty_hira, .qwerty_abc, .qwerty_numbers, .qwerty_symbols:
+            // All QWERTY keyboards: show "enter" text
+            return KeyLabel(.text("enter"), width: width, textSize: textSize, textColor: textColor)
         default:
-            // For qwerty kana and other keyboards, use the original localized text
+            // For other keyboards, use the original localized text
             let text = Design.language.getEnterKeyText(states.enterKeyState)
             return KeyLabel(.text(text), width: width, textSize: textSize, textColor: textColor)
         }

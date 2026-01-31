@@ -115,7 +115,7 @@ struct ResultBar<Extension: ApplicationSpecificKeyboardViewExtension>: View {
                                                 )
                                             })
                                             .buttonStyle(ResultButtonStyle<Extension>(height: buttonHeight, selected: .init(selection: variableStates.resultModel.selection, index: data.id)))
-                                            .simultaneousGesture(
+                                            .highPriorityGesture(
                                                 LongPressGesture(minimumDuration: 0.5)
                                                     .onEnded { _ in
                                                         if let labelText = data.candidate.textualRepresentation {

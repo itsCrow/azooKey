@@ -21,7 +21,7 @@ struct LargeTextView<Extension: ApplicationSpecificKeyboardViewExtension>: View 
     }
 
     private var font: Font {
-        Font.system(size: Design.largeTextViewFontSize(text, upsideComponent: variableStates.upsideComponent, orientation: variableStates.keyboardOrientation), weight: .regular, design: .serif)
+        Font.system(size: Design.largeTextViewFontSize(text, upsideComponent: variableStates.upsideComponent, orientation: variableStates.keyboardOrientation), weight: .bold, design: .default)
     }
 
     private var backgroundColor: Color {

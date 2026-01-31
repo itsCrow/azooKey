@@ -127,7 +127,7 @@ struct SimpleEnterKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>:
     let unpressedKeyColorType: SimpleUnpressedKeyColorType = .enter
     func label(width: CGFloat, states: VariableStates) -> KeyLabel<Extension> {
         let text = Design.language.getEnterKeyText(states.enterKeyState)
-        return KeyLabel(.text(text), width: width)
+        return KeyLabel(.text(text), width: width, textSize: .xsmall)
     }
 
     func feedback(variableStates: VariableStates) {
@@ -160,9 +160,9 @@ struct SimpleNextCandidateKeyModel<Extension: ApplicationSpecificKeyboardViewExt
 
     func label(width: CGFloat, states: VariableStates) -> KeyLabel<Extension> {
         if states.resultModel.results.isEmpty {
-            KeyLabel(.text("空白"), width: width)
+            KeyLabel(.text("空白"), width: width, textSize: .xsmall)
         } else {
-            KeyLabel(.text("次候補"), width: width)
+            KeyLabel(.text("次候補"), width: width, textSize: .xsmall)
         }
     }
 

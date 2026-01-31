@@ -14,14 +14,8 @@ struct QwertySpaceKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>:
     }
 
     func label<ThemeExtension>(width: CGFloat, theme _: ThemeData<ThemeExtension>, states: VariableStates, color: Color?) -> KeyLabel<Extension> where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {
-        switch states.keyboardLanguage {
-        case .el_GR:
-            return KeyLabel(.text("διάστημα"), width: width, textSize: .small, textColor: color)
-        case .en_US:
-            return KeyLabel(.text("space"), width: width, textSize: .small, textColor: color)
-        case .ja_JP, .none:
-            return KeyLabel(.text("空白"), width: width, textSize: .small, textColor: color)
-        }
+        // Use "space" for all QWERTY keyboards for consistency
+        return KeyLabel(.text("space"), width: width, textSize: .small, textColor: color)
     }
 
     func backgroundStyleWhenUnpressed<ThemeExtension>(states _: VariableStates, theme: ThemeData<ThemeExtension>) -> UnifiedKeyBackgroundStyleValue where ThemeExtension: ApplicationSpecificKeyboardViewExtensionLayoutDependentDefaultThemeProvidable {

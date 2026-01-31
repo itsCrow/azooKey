@@ -149,12 +149,11 @@ public struct TabManager {
         }
     }
 
-    @MainActor mutating func initialize(variableStates: VariableStates) {
+    @MainActor public mutating func initialize(variableStates: VariableStates) {
         switch lastTab {
-        case .none:
+        case .none, .existential:
+            // Always use user_dependent to re-read current layout preferences
             self.moveTab(to: .user_dependent(.japanese), variableStates: variableStates)
-        case let .existential(tab):
-            self.moveTab(to: tab, variableStates: variableStates)
         case let .user_dependent(tab):
             self.moveTab(to: .user_dependent(tab), variableStates: variableStates)
         }

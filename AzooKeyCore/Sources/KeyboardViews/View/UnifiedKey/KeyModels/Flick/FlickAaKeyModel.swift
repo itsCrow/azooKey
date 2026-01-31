@@ -34,7 +34,7 @@ struct FlickAaKeyModel<Extension: ApplicationSpecificKeyboardViewExtension>: Uni
         if states.boolStates.isCapsLocked {
             KeyLabel(.image("capslock.fill"), width: width)
         } else {
-            KeyLabel(.text("a/A"), width: width)
+            KeyLabel(.text("a/A"), width: width, textSize: .small)
         }
     }
     func feedback(variableStates _: VariableStates) {

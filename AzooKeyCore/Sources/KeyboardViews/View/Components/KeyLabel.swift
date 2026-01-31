@@ -103,7 +103,7 @@ public struct KeyLabel<Extension: ApplicationSpecificKeyboardViewExtension>: Vie
             let mainText = symbols.first!
             let font = Design.fonts.keyLabelFont(text: mainText, width: width, fontSize: self.textSize, userDecidedSize: keyViewFontSize, theme: theme)
             let subText = symbols.dropFirst().joined()
-            let subFont = Design.fonts.keyLabelFont(text: subText, width: width, fontSize: .xxsmall, userDecidedSize: keyViewFontSize, theme: theme)
+            let subFont = Design.fonts.keyLabelFont(text: subText, width: width, fontSize: .xsmall, userDecidedSize: keyViewFontSize, theme: theme)
             VStack {
                 Text(mainText)
                     .font(font)
